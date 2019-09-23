@@ -107,6 +107,12 @@ aditof::Status Calibration::getAfeFirmware(std::string mode,
                          itt != sub_iter->second.value.end(); ++itt) {
                         data.push_back((uint16_t)*itt);
                     }
+                    auto dataIt = data.end();
+                    dataIt--;
+                    dataIt--;
+                    data.insert(dataIt, 0x81ff);
+                    data.insert(dataIt, 0xc34a);
+
                     LOG(INFO) << "Firmware size: " << data.size();
                     return Status::OK;
                 }
