@@ -9,7 +9,7 @@
 - To run the system in standalone mode, besides the accesories that are provided in the AD-96TOF1-EBZ box you'll need an additional HDMI cable to connect to a monitor and a USB keyboard and mouse
 
 ### Power on sequence
-- plug the SD card that came in the AD-96TOF1-EBZ box into the Thor96 SD card slot. To benefit from the most recent software updates it is higly recommended to update the SD card with the [latest SD card image](https://github.com/analogdevicesinc/aditof_sdk#supported-embedded-platforms)
+- plug the SD card flashed with image provided with release 1.1.1-thor96 (https://github.com/ArrowElectronics/aditof_sdk/releases/tag/v1.1.1-thor96) into the Thor96 SD card slot. 
 - connect the HDMI cable from the monitor to the Thor96 HDMI connector
 - connect a USB mouse and keyboard to the Thor96. It's possible to use either a mouse & keyboard combo or a separate mouse and keyboard
 - connect the 5V power supply to the camera board and set the camera power switch S2 to on. Once the camera board is powered up the DS1 LED will turn on
@@ -27,7 +27,7 @@
 
 Once Linux boots you'll see on the HDMI monitor the Linux desktop and on the top left corner a shortcut to the evaluation application. Double clicking on the icon will start the evaluation application.  A console window will open to show the application's status and, after a few seconds, the evaluation application GUI will be displayed. 
 
-![aditof-demo](https://github.com/analogdevicesinc/aditof_sdk/blob/master/doc/img/aditof_demo.png)
+![aditof-demo](https://github.com/ArrowElectronics/aditof_sdk/tree/master/doc/img/aditof_demo.png)
 
 The evaluation application allows to do live streaming of depth and IR data as well as recording the depth and IR data and playing back from a file. The depth data is displayed as a color map ranging from warm to cold colors as the distance from the camera increases. A point in the middle of the depth image shows the distance in mm to the target.
 
