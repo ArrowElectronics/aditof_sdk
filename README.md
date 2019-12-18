@@ -21,7 +21,7 @@ For more details on building the SDK on a host platform please check the **User 
 
 Designed using a modular approach, the 3D ToF hardware prototyping platform enables connectivity to the 96Boards development boards suite as well RaspberryPI or any other hardware platforms that have the RaspberryPI camera connector. 
 
-For more details on building the SDK on an embedded platform please check the **User Guide** specified below for either DragonBoard 410c or Raspberry PI 3.
+For more details on building the SDK on an embedded platform please check the **User Guide** specified below for available platforms.
 
 | Platform | Documentation | GitHub master status | Downloads |
 | --------- | ----------- | ----------- | ----------- |
