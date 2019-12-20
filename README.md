@@ -26,7 +26,7 @@ For more details on building the SDK on an embedded platform please check the **
 | Platform | Documentation | GitHub master status | Downloads |
 | --------- | ----------- | ----------- | ----------- |
 | DragonBoard 410c | [User Guide](doc/dragonboard410c/user_guide.md) | [![Build Status](https://travis-ci.org/analogdevicesinc/aditof_sdk.svg?branch=master)](https://travis-ci.org/analogdevicesinc/aditof_sdk) | [![SD card image](https://img.shields.io/badge/release-latest_sd_card_image-blue.svg)](http://swdownloads.analog.com/cse/aditof/dragonboard410c-latest-image.tar.xz) |
-| Raspberry PI 3 | [User Guide](doc/raspberrypi3/user_guide.md) | [![Build Status](https://travis-ci.org/analogdevicesinc/aditof_sdk.svg?branch=master)](https://travis-ci.org/analogdevicesinc/aditof_sdk) | [![SD card image](https://img.shields.io/badge/release-SD_card_image_v0.1-blue.svg)](http://swdownloads.analog.com/cse/aditof/aditof-v0.1-raspberrypi3-sdimage.tar.xz) |
+| Raspberry Pi 3,4 | [User Guide](doc/raspberrypi3/user_guide.md) | [![Build Status](https://travis-ci.org/analogdevicesinc/aditof_sdk.svg?branch=master)](https://travis-ci.org/analogdevicesinc/aditof_sdk) | [![SD card image](https://img.shields.io/badge/release-SD_card_image_v0.1-blue.svg)](http://swdownloads.analog.com/cse/aditof/aditof-v0.1-raspberrypi3-sdimage.tar.xz) |
 | Thor96 | [User Guide](doc/thor96/user_guide.md) | - | [![SD card image](https://img.shields.io/badge/release-SD_card_image_v0.1-blue.svg)](https://github.com/ArrowElectronics/aditof_sdk/releases/download/v1.1.1-thor96/thor96_sd_card.img.tar.bz2) |
 
 [How to write the SD card image onto the SD card?](doc/sdcard_burn.md)
@@ -80,6 +80,19 @@ For more details about the SDK check the links below:
     <td>imshow</td>
     <td><a href="https://github.com/analogdevicesinc/aditof_sdk/tree/master/bindings/opencv/imshow"> C++ with OpenCV </a></td>
     <td>A basic example that displays data provided by the Aditof SDK</td>
+  </tr>
+   <tr>
+    <td>Image Acquisition Toolbox</td>
+    <td><a href="https://github.com/analogdevicesinc/aditof_sdk/tree/master/bindings/matlab"> MATLAB </a></td>
+    <td>Examples of how to use the AD-96TOF1-EBZ camera in MATALB over USB and Ethernet</td>
+  </tr>
+  <tr>
+    <td rowspan="2">showPointCloud</td>
+    <td><a href="https://github.com/analogdevicesinc/aditof_sdk/tree/master/bindings/python/examples/showPointCloud"> Python with Open3D </a></td>
+    <td rowspan="2">A simple object detection example</td>
+  </tr>
+  <tr>
+     <td><a href="https://github.com/analogdevicesinc/aditof_sdk/tree/master/bindings/open3D/showPointCloud"> C++ with Open3D </a></td>
   </tr>
 </table>
 

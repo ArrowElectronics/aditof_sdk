@@ -1,5 +1,6 @@
 #include "camera_96tof1.h"
 
+#include <aditof/camera_96tof1_specifics.h>
 #include <aditof/device_interface.h>
 #include <aditof/frame.h>
 #include <aditof/frame_operations.h>
@@ -9,10 +10,14 @@
 #include <glog/logging.h>
 #include <iterator>
 
-Camera96Tof1::Camera96Tof1(aditof::DeviceInterface *device)
-    : m_device(device), m_devStarted(false) {}
+static const std::string skCustomMode = "custom";
 
-Camera96Tof1::~Camera96Tof1() { delete m_device; }
+Camera96Tof1::Camera96Tof1(std::unique_ptr<aditof::DeviceInterface> device)
+    : m_specifics(std::make_shared<aditof::Camera96Tof1Specifics>(
+          aditof::Camera96Tof1Specifics(this))),
+      m_device(std::move(device)), m_devStarted(false) {}
+
+Camera96Tof1::~Camera96Tof1() = default;
 
 aditof::Status Camera96Tof1::initialize() {
     using namespace aditof;
@@ -55,7 +60,14 @@ aditof::Status Camera96Tof1::setMode(const std::string &mode,
     LOG(INFO) << "Chosen mode: " << mode.c_str();
 
     std::vector<std::pair<std::string, int>> modeRanges = {
-        {"near", 800}, {"medium", 3000}, {"far", 6000}};
+        {"near", 800}, {"medium", 4500}, {"far", 6000}};
+
+    if ((mode != skCustomMode) ^ (modeFilename.empty())) {
+        LOG(WARNING) << " mode must be set to: '" << skCustomMode
+                     << "' and a firmware must be provided";
+
+        return Status::INVALID_ARGUMENT;
+    }
 
     if (!modeFilename.empty()) {
         std::ifstream firmwareFile(modeFilename.c_str(), std::ios::binary);
@@ -76,8 +88,8 @@ aditof::Status Camera96Tof1::setMode(const std::string &mode,
                   std::back_inserter(firmwareData));
         status = m_device->program(firmwareData.data(), firmwareData.size());
         firmwareFile.close();
+        m_details.range = 4095;
     } else {
-        m_details.mode = mode;
         auto iter = std::find_if(modeRanges.begin(), modeRanges.end(),
                                  [&mode](std::pair<std::string, int> mp) {
                                      return mp.first == mode;
@@ -100,7 +112,8 @@ aditof::Status Camera96Tof1::setMode(const std::string &mode,
             LOG(INFO) << "Found firmware for mode: " << mode;
         }
 
-        LOG(INFO) << "Firmware size: " << firmwareData.size();
+        LOG(INFO) << "Firmware size: " << firmwareData.size() * sizeof(uint16_t)
+                  << " bytes";
         status = m_device->program((uint8_t *)firmwareData.data(),
                                    2 * firmwareData.size());
         if (status != Status::OK) {
@@ -126,6 +139,9 @@ aditof::Status Camera96Tof1::setMode(const std::string &mode,
     getAvailableModes(modes);
 
     for (const std::string &mode : modes) {
+        if (mode == skCustomMode)
+            continue;
+
         float gain = 1.0, offset = 0.0;
         Status status = m_calibration.getGainOffset(mode, gain, offset);
         if (status == Status::OK) {
@@ -141,6 +157,8 @@ aditof::Status Camera96Tof1::setMode(const std::string &mode,
         }
     }
 
+    m_details.mode = mode;
+
     return status;
 }
 
@@ -155,6 +173,8 @@ aditof::Status Camera96Tof1::getAvailableModes(
     availableModes.emplace_back("far");
 
     // TO DO
+
+    availableModes.emplace_back(skCustomMode);
 
     return status;
 }
@@ -240,7 +260,8 @@ aditof::Status Camera96Tof1::requestFrame(aditof::Frame *frame,
         return status;
     }
 
-    if (m_details.frameType.type == "depth_ir") {
+    if (m_details.mode != skCustomMode &&
+        m_details.frameType.type == "depth_ir") {
         m_device->applyCalibrationToFrame(frameDataLocation, m_details.mode);
     }
 
@@ -256,4 +277,10 @@ aditof::Status Camera96Tof1::getDetails(aditof::CameraDetails &details) const {
     return status;
 }
 
-aditof::DeviceInterface *Camera96Tof1::getDevice() { return m_device; }
+std::shared_ptr<aditof::CameraSpecifics> Camera96Tof1::getSpecifics() {
+    return m_specifics;
+}
+
+std::shared_ptr<aditof::DeviceInterface> Camera96Tof1::getDevice() {
+    return m_device;
+}
